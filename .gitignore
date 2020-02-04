@@ -1,0 +1,10 @@
+/images
+api_caller/Dockerfile
+send_symbol/Dockerfile
+maintenance/Dockerfile
+.vscode/
+frontend/Dockerfile
+system_test/Dockerfile
+test/Dockerfile
+report/Dockerfile
+track_handler/Dockerfile
