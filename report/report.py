@@ -3,7 +3,9 @@ from datetime import datetime
 from os import environ
 import socket
 import lib
+from time import time
 
+c = time()
 
 database_login_info = {
     "user":"root",
@@ -30,3 +32,5 @@ with smtplib.SMTP(host="smtp.gmail.com",port=587) as smtp:
     msg = f"""Subject: {subject}\n\n{body}"""
     print(msg)
     smtp.sendmail(environ["email"], "mitchellbhuysen@hotmail.com",msg)
+
+print(time()-c)
