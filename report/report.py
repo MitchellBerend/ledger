@@ -7,7 +7,7 @@ import lib
 
 database_login_info = {
     "user":"root",
-    "password":"234",
+    "password":environ["db_password"],
     "database":"profile",
     "host":socket.gethostbyname("profile_odin")
 }
