@@ -1,16 +1,6 @@
 import socket
 import lib
 from os import environ
-#   decide wheter the request is a put or delete request
-
-#   put     -> make api request 
-#   delete  -> delete entry from profile database
-
-#   put     -> send symbol to api caller, get the latest data, insert into db
-
-#   delete  -> verify data in db, delete entry
-
-#   return performed action result.
 
 database_login_info = {
     "user":"root",

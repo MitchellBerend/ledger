@@ -5,38 +5,6 @@ import hashlib
 from datetime import datetime
 from socket import gethostbyname
 from time import sleep
-"""
-
-database_login_info = {
-    "user":"root",
-    "password":"123",
-    "database":"cache",
-    "host":gethostbyname("portfolio-db")
-}
-to do 
-
-calling api to gather info
-
-append the info to the database
-
-deleting dupes from db
-
-order of operations:
-    create new table 
-    delete dupes via rownuber from new table
-    delete old table
-    rename new table to old table
-
-WITH {symbolCTE} AS (
-    SELECT * FROM ROW_NUMBER() OVER (PARTITION BY timestamp order by a id) as rownumber from symbol
-);
-
-DELETE FROM symbol WHERE rownumber > 1;
-
-DROP TABLE symbol;
-
-RENAME TABLE symbolCTE TO symbol;
-"""
 
 database_login_info = {
     "user":"root",

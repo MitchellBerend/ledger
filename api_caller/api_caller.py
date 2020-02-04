@@ -5,24 +5,6 @@ from os import environ
 import lib
 
 
-"""
-NOTES
-Receives symbol,
-checks cache,
-if in cache -> get from cache, send back
-if not in cache -> make api call
-
-api_key = environ["api_caller"]
-
-database info = {
-    "user":"api_caller",
-    "password":environ["db_password"],
-    "database":"cache"
-}
-
-timestamp varchar(20),open float,high float,low float,close float,volume int,symbol varchar(4),id varchar(56)
-
-"""
 
 database_login_info = {
     "user":"root",

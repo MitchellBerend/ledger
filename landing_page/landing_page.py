@@ -2,14 +2,6 @@ import socket
 from os import environ
 import lib
 
-"""
-database_login_info = {
-    "user":"root",
-    "password":environ["db_password"],
-    "database":"profile",
-    "host":socket.gethostbyname("profile_odin")
-}
-"""
 
 database_login_info = {
     "user":"root",
