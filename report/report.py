@@ -33,4 +33,4 @@ with smtplib.SMTP(host="smtp.gmail.com",port=587) as smtp:
     print(msg)
     smtp.sendmail(environ["email"], "mitchellbhuysen@hotmail.com",msg)
 
-print(time()-c)
+print(f"""proces took {time()-c} seconds""")
