@@ -12,7 +12,7 @@ def retrieve_data(symbol, **login):
     con = sql.connect(**login)
     cur = con.cursor()
     cur.execute(
-        f"""SELECT DISTINCT * FROM {symbol};"""
+        f"""SELECT DISTINCT * FROM {symbol.replace(".","")};"""
         )
     data = cur.fetchall()
     return data
@@ -87,8 +87,7 @@ def get_data_alphavantage(symbol,api_key):
                 data.append(current_dict)
                 current_dict = {}
         return data
-    else:
-        return None
+    return None
 
 def add_to_db(data,**login):
     """
