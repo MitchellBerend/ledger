@@ -5,24 +5,6 @@ from os import environ
 import lib
 
 
-"""
-NOTES
-Receives symbol,
-checks cache,
-if in cache -> get from cache, send back
-if not in cache -> make api call
-
-api_key = environ["api_caller"]
-
-database info = {
-    "user":"api_caller",
-    "password":environ["db_password"],
-    "database":"cache"
-}
-
-timestamp varchar(20),open float,high float,low float,close float,volume int,symbol varchar(4),id varchar(56)
-
-"""
 
 database_login_info = {
     "user":"root",
@@ -41,7 +23,8 @@ while True:
     data = lib.get_data_alphavantage(symbol,environ["api_caller"]) # make alphavatnage api call
     if data == None:
         print(data)
-        data = lib.format_data(lib.retrieve_data(symbol,**database_login_info))
+        data = lib.retrieve_data(symbol,**database_login_info)
+        data = lib.format_data(data)
         print("data from cache")
         client.send(bytes(str(data),"utf-8"))
         print(data)
