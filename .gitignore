@@ -8,3 +8,4 @@ system_test/Dockerfile
 test/Dockerfile
 report/Dockerfile
 track_handler/Dockerfile
+report/lib/
