@@ -7,7 +7,7 @@ import lib
 
 
 database_login_info = {
-    "user":"root",
+    "user":environ["db_user"],
     "password":environ["db_password"],
     "database":"cache",
     "host":socket.gethostbyname("portfolio-db")

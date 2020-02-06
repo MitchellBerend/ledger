@@ -7,7 +7,7 @@ from socket import gethostbyname
 from time import sleep
 
 database_login_info = {
-    "user":"root",
+    "user":environ["db_user"],
     "password":environ["db_password"],
     "database":"cache",
     "host":gethostbyname("portfolio-db")
