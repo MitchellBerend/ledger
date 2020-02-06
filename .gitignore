@@ -10,3 +10,4 @@ report/Dockerfile
 track_handler/Dockerfile
 report/lib/
 landing_page/Dockerfile
+docker-compose.yml

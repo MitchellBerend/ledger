@@ -78,3 +78,53 @@ def delete_data_from_profile(symbol,**login_info):
     finally:
         con.commit()
         con.close()
+
+def get_value_from_profile(symbol, **login_info):
+    con = sql.connect(**login_info)
+    try:
+        cur = con.cursor()
+        cur.execute(f"""SELECT sum(total_value) FROM profile WHERE name="{symbol}";""")
+        value = cur.fetchone()
+    except:
+        return 0
+    finally:
+        con.close()
+    return float(value[0])
+
+
+def add_wallet(symbol, **login_info):
+    assert login_info != {}, "Login info not passed as an argument."
+    amount = get_value_from_profile(symbol, **login_info)
+    assert amount != 0, "Amount was not retrieved."
+    con = sql.connect(**login_info)
+    try:
+        cur = con.cursor()
+        cur.execute(f"""INSERT INTO wallet values('{symbol}', {amount});""")
+    finally:
+        con.commit()
+        con.close()
+
+
+def subtract_wallet(symbol, amount, **login_info):
+    con = sql.connect(**login_info)
+    try:
+        cur = con.cursor()
+        cur.execute("""SELECT sum(amount) FROM wallet;""")
+        wallet = cur.fetchone()[0]
+        print(wallet)
+        cur.execute(f"""INSERT INTO wallet values ('{symbol}', {-amount});""")
+    finally:
+        con.commit()
+        con.close()
+
+
+
+
+"""
+
+CREATE TABLE wallet (
+    name varchar(10),
+    amount float
+);
+
+"""
