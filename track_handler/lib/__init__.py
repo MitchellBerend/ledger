@@ -79,33 +79,37 @@ def delete_data_from_profile(symbol,**login_info):
         con.commit()
         con.close()
 
-def get_value_from_profile(symbol, **login_info):
-    con = sql.connect(**login_info)
-    try:
-        cur = con.cursor()
-        cur.execute(f"""SELECT sum(total_value) FROM profile WHERE name="{symbol}";""")
-        value = cur.fetchone()
-    except:
-        return 0
-    finally:
-        con.close()
-    return float(value[0])
+def get_value_from_api(symbol):
+    sock = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
+    sock.connect((socket.gethostbyname("api_caller"),5000))
+    sock.send(bytes(str(symbol), "utf-8"))
+    data = ""
+    while True:
+        msg = sock.recv(1024)
+        if len(msg) <= 0:
+            break
+        data += msg.decode("utf-8")
+    data = eval(data)
+    return float(data[0]["close"])
 
 
 def add_wallet(symbol, **login_info):
     assert login_info != {}, "Login info not passed as an argument."
-    amount = get_value_from_profile(symbol, **login_info)
-    assert amount != 0, "Amount was not retrieved."
+    value = get_value_from_api(symbol)
+    assert value != 0, "Amount was not retrieved."
     con = sql.connect(**login_info)
     try:
         cur = con.cursor()
-        cur.execute(f"""INSERT INTO wallet values('{symbol}', {amount});""")
+        cur.execute(f"""SELECT amount FROM profile WHERE name='{symbol}';""")
+        amount = float(cur.fetchone()[0])
+        cur.execute(f"""INSERT INTO wallet values('{symbol}', {amount*value});""")
     finally:
         con.commit()
         con.close()
 
 
 def subtract_wallet(symbol, amount, **login_info):
+    assert login_info != {}, "Login info not passed as an argument."
     con = sql.connect(**login_info)
     try:
         cur = con.cursor()
