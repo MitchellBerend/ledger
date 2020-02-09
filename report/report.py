@@ -8,7 +8,7 @@ from time import time
 c = time()
 
 database_login_info = {
-    "user":"root",
+    "user":environ["db_user"],
     "password":environ["db_password"],
     "database":"profile",
     "host":socket.gethostbyname("profile_odin")

@@ -12,10 +12,10 @@ def retrieve_data(symbol, **login):
     con = sql.connect(**login)
     cur = con.cursor()
     cur.execute(
-        f"""SELECT DISTINCT * FROM {symbol.replace(".","")};"""
+        f"""SELECT DISTINCT * FROM {symbol.replace(".","")} order by timestamp;"""
         )
     data = cur.fetchall()
-    return data
+    return data[100:]
 
 def format_data(data_dict):
     """
@@ -86,6 +86,7 @@ def get_data_alphavantage(symbol,api_key):
                 current_dict["symbol"] = f"{symbol}"
                 data.append(current_dict)
                 current_dict = {}
+        data.sort(key= lambda x : x["timestamp"],reverse=True)
         return data
     return None
 
