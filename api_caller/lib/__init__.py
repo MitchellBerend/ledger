@@ -41,6 +41,7 @@ def format_data(data_dict):
         else:
             data.append(placeholder)
             placeholder = {}
+    data.sort(key= lambda x : x["timestamp"],reverse=True)
     return data
 
 def get_data_alphavantage(symbol,api_key):
