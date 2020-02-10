@@ -81,7 +81,41 @@ class tracker(Resource):
             data += msg.decode("utf-8")
         return data
 
+class wallet(Resource):
+    def get(self):
+        action = ["check"]
+        sock = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
+        sock.connect((socket.gethostbyname("wallet_interaction"),5000))
+        sock.send(bytes(str(action), "utf-8"))
+        data = ""
+        while True:
+            msg = sock.recv(1024)
+            if len(msg) <= 0:
+                break
+            data += msg.decode("utf-8")
+        return data
 
+    def post(self):
+        parser = reqparse.RequestParser()
+        parser.add_argument("action", required=True)
+        parser.add_argument("amount", required=True)
+        args = parser.parse_args()
+        if args["action"].lower() != "deposit" and args["action"].lower() != "withdraw":
+            return "Action not allowed"
+        data = [args["amount"], args["action"].lower()]
+        sock = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
+        sock.connect((socket.gethostbyname("wallet_interaction"),5000))
+        sock.send(bytes(str(data), "utf-8"))
+        data = ""
+        while True:
+            msg = sock.recv(1024)
+            if len(msg) <= 0:
+                break
+            data += msg.decode("utf-8")
+        return data
+
+
+api.add_resource(wallet, '/wallet')
 api.add_resource(symbol_data, '/symbol_data')
 api.add_resource(tracker, '/tracker')
 
