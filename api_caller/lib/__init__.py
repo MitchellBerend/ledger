@@ -15,7 +15,7 @@ def retrieve_data(symbol, **login):
         f"""SELECT DISTINCT * FROM {symbol.replace(".","")} order by timestamp;"""
         )
     data = cur.fetchall()
-    return data[:100]
+    return data[100:]
 
 def format_data(data_dict):
     """
