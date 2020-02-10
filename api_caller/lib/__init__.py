@@ -15,7 +15,7 @@ def retrieve_data(symbol, **login):
         f"""SELECT DISTINCT * FROM {symbol.replace(".","")} order by timestamp;"""
         )
     data = cur.fetchall()
-    return data[100:]
+    return data[:100]
 
 def format_data(data_dict):
     """
@@ -41,6 +41,7 @@ def format_data(data_dict):
         else:
             data.append(placeholder)
             placeholder = {}
+    data.sort(key= lambda x : x["timestamp"],reverse=True)
     return data
 
 def get_data_alphavantage(symbol,api_key):
