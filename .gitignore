@@ -1,14 +1,4 @@
-/images
-api_caller/Dockerfile
-send_symbol/Dockerfile
-maintenance/Dockerfile
 .vscode/
-frontend/Dockerfile
-system_test/Dockerfile
-test/Dockerfile
-report/Dockerfile
-track_handler/Dockerfile
 report/lib/
-landing_page/Dockerfile
 docker-compose.yml
-wallet_interaction/Dockerfile
+**/Dockerfile
