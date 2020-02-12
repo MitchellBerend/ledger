@@ -54,7 +54,7 @@ def add_data_to_db(data, **database_login_info):
             _hash = hashlib.sha224(bytes(str(datetime.now()),"utf-8")).hexdigest()
             con = sql.connect(**database_login_info)
             cur = con.cursor()
-            print(f"""INSERT INTO cache.{item["symbol"].replace(".","")} values('{item["timestamp"]}',\t{item["open"]},\t{item["high"]},\t{item["low"]},\t{item["close"]},\t{item["volume"]},\t'{item["symbol"]}',\t'{_hash}');""")
+            print(f"""INSERT INTO cache.{item["symbol"].replace(".","")} values('{item["timestamp"]}',{round(item["open"],2)}, {round(item["high"])}, {round(item["low"])}, {round(item["close"])}, {item["volume"]}, '{item["symbol"]}', '{_hash}');""")
             cur.execute(
             f"""INSERT INTO cache.{item["symbol"].replace(".","")} values('{item["timestamp"]}' , {item["open"]} , {item["high"]} , {item["low"]}, {item["close"]}, {item["volume"]}, '{item["symbol"]}', '{_hash}' );"""
         )
