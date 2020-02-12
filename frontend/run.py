@@ -1,9 +1,6 @@
 from flask import Flask, jsonify, request
 from flask_restful import Api, Resource, reqparse
 import socket
-from time import sleep
-from os import system
-from multiprocessing import Process
 
 app = Flask(__name__)
 
