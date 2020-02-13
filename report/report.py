@@ -32,6 +32,6 @@ with smtplib.SMTP(host="smtp.gmail.com",port=587) as smtp:
     subject = f"""Portfolio report {str(datetime.now())[:19]}"""
     msg = f"""Subject: {subject}\n\n{body}"""
     print(msg)
-    smtp.sendmail(environ["email"], "mitchellbhuysen@hotmail.com",msg)
+    smtp.sendmail(environ["email"], environ["target_email"],msg)
 
 print(f"""process took {time()-c} seconds""")
