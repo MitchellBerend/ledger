@@ -1,6 +1,6 @@
 import sys
 import unittest
-sys.path.append("..")
+sys.path.append("../")
 from api_caller import api_caller_lib
 
 class test(unittest.TestCase):
