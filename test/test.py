@@ -1,11 +1,13 @@
 import sys
 import unittest
 sys.path.append("../api_caller")
+
+print(os.path.dirname(os.path.realpath(__file__)))
+
 import api_caller_lib
 import os
 
 
-print(os.path.dirname(os.path.realpath(__file__)))
 
 
 class test(unittest.TestCase):
