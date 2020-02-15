@@ -1,7 +1,7 @@
 import sys
 import unittest
 sys.path.append("/api_caller")
-import api_caller_lib
+from api_caller import api_caller_lib
 import os
 
 
