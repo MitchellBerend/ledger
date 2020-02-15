@@ -5,6 +5,8 @@ from hashlib import sha224
 from datetime import datetime
 
 
+
+
 def retrieve_data(symbol, **login):
     """
     Takes a symbol and login parameters and returns the data.
