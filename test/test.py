@@ -1,7 +1,6 @@
 import sys
 import unittest
 sys.path.append("/home/ledger/api_caller")
-import os
 
 import api_caller_lib
 
