@@ -7,10 +7,6 @@ print(os.path.dirname(os.path.realpath(__file__)))
 
 import api_caller_lib
 
-
-
-
-
 class test(unittest.TestCase):
     
     def test_retrieve_data(self):
