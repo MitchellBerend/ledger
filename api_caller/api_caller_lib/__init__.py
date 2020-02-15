@@ -3,7 +3,7 @@ import requests as r
 import mysql.connector as sql
 from hashlib import sha224
 from datetime import datetime
-
+""""""
 
 def retrieve_data(symbol, **login):
     """
