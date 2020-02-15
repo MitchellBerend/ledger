@@ -1,7 +1,11 @@
 import sys
 import unittest
-sys.path.append("..")
 from api_caller import api_caller_lib
+import os
+
+
+print(os.path.dirname(os.path.realpath(__file__)))
+
 
 class test(unittest.TestCase):
     
