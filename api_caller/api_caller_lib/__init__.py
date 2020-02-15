@@ -10,12 +10,14 @@ def retrieve_data(symbol, **login):
     Takes a symbol and login parameters and returns the data.
     """
     con = sql.connect(**login)
-    cur = con.cursor()
-    cur.execute(
-        f"""SELECT DISTINCT * FROM {symbol.replace(".","")} order by timestamp;"""
-        )
-    data = cur.fetchall()
-    return data[100:]
+    
+    try:
+        cur = con.cursor()
+        cur.execute(f"""SELECT * FROM {symbol.replace(".","")} order by timestamp;""")
+        data = cur.fetchall()
+    finally:
+        con.close()
+    return data[:100]
 
 def format_data(data_dict):
     """
