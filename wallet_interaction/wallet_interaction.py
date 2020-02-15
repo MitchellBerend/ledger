@@ -1,6 +1,6 @@
 from os import environ
 import socket
-import lib
+import wallet_interaction_lib 
 
 
 database_login_info = {
@@ -20,15 +20,15 @@ while True:
     amount, action = data[0], data[-1]
     print(f"""amount: {amount}\naction: {action}""")
     if action == "check":
-        client.send(bytes(str(lib.show_current(**database_login_info)),"utf-8"))
+        client.send(bytes(str(wallet_interaction_lib.show_current(**database_login_info)),"utf-8"))
         print("check")
         break
     elif action == "withdraw":
-        client.send(bytes(str(lib.withdraw_money(amount, **database_login_info)),"utf-8"))
+        client.send(bytes(str(wallet_interaction_lib.withdraw_money(amount, **database_login_info)),"utf-8"))
         print("withdraw")
         break
     elif action == "deposit":
-        client.send(bytes(str(lib.deposit_money(amount, **database_login_info)),"utf-8"))
+        client.send(bytes(str(wallet_interaction_lib.deposit_money(amount, **database_login_info)),"utf-8"))
         print("deposit")
         break
     else:

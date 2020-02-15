@@ -1,6 +1,6 @@
 import socket
 from os import environ
-import lib
+import landing_page_lib
 
 
 database_login_info = {
@@ -17,7 +17,7 @@ while True:
     client, address = sock.accept()
     symbol = client.recv(10).decode("utf-8")
     if symbol == " ":
-        data = lib.get_name_price_amount(**database_login_info)
+        data = landing_page_lib.get_name_price_amount(**database_login_info)
         print(data)
         client.send(bytes(str(data),"utf-8"))
         break
