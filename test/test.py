@@ -140,14 +140,15 @@ class test(unittest.TestCase):
                     }"""
         api_caller_lib.r.get = mock_get
         unordered = ""
-        ordered = [
-            {"close":100,
+        ordered = [{
+            "timestamp":"2020-02-14 16:00:00",
+            "open":100,
             "high":100,
             "low":100,
-            "open":100,
-            "symbol":"NSRGY",
-            "timestamp":"2020-02-14 16:00:00",
-            "volume":20},
+            "close":100,
+            "volume":20,
+            "symbol":"NSRGY"
+            },
             {"close":100,
             "high":100,
             "low":100,
