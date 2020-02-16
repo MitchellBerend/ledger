@@ -93,15 +93,17 @@ def add_to_db(data,**login):
     Outputs the result of the queries to stdout.
     """
     con = sql.connect(**login)
-    cur = con.cursor()
-    cur.execute(f"""CREATE TABLE IF NOT EXISTS {data[0]["symbol"].replace(".","")} (timestamp varchar(20),open float, high float,low float,close float, volume int, symbol varchar(10), id varchar(56));""")
-    con.commit()
-    for account in data:
-        _hash = sha224(bytes(str(datetime.now()),"utf-8")).hexdigest()
-        try:
-            cur.execute(f"""INSERT INTO {account["symbol"].replace(".","")} values('{account["timestamp"]}', {account["open"]}, {account["high"]}, {account["low"]}, {account["close"]}, {account["volume"]}, '{account["symbol"]}', '{_hash}');""")
-            print(f"""query INSERT INTO {account["symbol"].replace(".","")} values('{account["timestamp"]}', {account["open"]}, {account["high"]}, {account["low"]}, {account["close"]}, {account["volume"]}, '{account["symbol"]}', '{_hash}'); executed""")
-        except:
-            print(f"""query INSERT INTO {account["symbol"].replace(".","")} values('{account["timestamp"]}', {account["open"]}, {account["high"]}, {account["low"]}, {account["close"]}, {account["volume"]}, '{account["symbol"]}', '{_hash}'); not executed""")
-    con.commit()
-    con.close()
+    try:
+        cur = con.cursor()
+        cur.execute(f"""CREATE TABLE IF NOT EXISTS {data[0]["symbol"].replace(".","")} (timestamp varchar(20),open float, high float,low float,close float, volume int, symbol varchar(10), id varchar(56));""")
+        con.commit()
+        for account in data:
+            _hash = sha224(bytes(str(datetime.now()),"utf-8")).hexdigest()
+            try:
+                cur.execute(f"""INSERT INTO {account["symbol"].replace(".","")} values('{account["timestamp"]}', {account["open"]}, {account["high"]}, {account["low"]}, {account["close"]}, {account["volume"]}, '{account["symbol"]}', '{_hash}');""")
+                print(f"""query INSERT INTO {account["symbol"].replace(".","")} values('{account["timestamp"]}', {account["open"]}, {account["high"]}, {account["low"]}, {account["close"]}, {account["volume"]}, '{account["symbol"]}', '{_hash}'); executed""")
+            except:
+                print(f"""query INSERT INTO {account["symbol"].replace(".","")} values('{account["timestamp"]}', {account["open"]}, {account["high"]}, {account["low"]}, {account["close"]}, {account["volume"]}, '{account["symbol"]}', '{_hash}'); not executed""")
+    finally:
+        con.commit()
+        con.close()
