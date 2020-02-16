@@ -30,3 +30,6 @@ Displays current status in json format.
 - DELETE
 	Sends a sell order to respective brokers. Once confirmation is received, deletes/modifies the entry in the 	database
 		1. symbol
+		
+		
+test
