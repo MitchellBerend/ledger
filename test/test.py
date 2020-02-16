@@ -50,7 +50,7 @@ class test(unittest.TestCase):
             {"timestamp": "2020-01-06","open": 80,"high": 80,"low": 80,"close": 80,"volume": 1000,"symbol": "MSFT"},
             {"timestamp": "2020-01-07","open": 80,"high": 80,"low": 80,"close": 80,"volume": 1000,"symbol": "MSFT"}]
         for _ in range(100):
-            unordered.insert(random.choice(6),unordered.pop())
+            unordered.insert(random.choice([i for i in range(7)]),unordered.pop())
         self.assertEqual(api_caller_lib.format_data(),ordered)
 
 
