@@ -20,30 +20,22 @@ def retrieve_data(symbol, **login):
         con.close()
     return data[:100]
 
-def format_data(data_dict):
+def format_data(data_list):
     """
     Takes a list of tuples from the retrieve data function and reformats it into json format.
     """
     data = []
-    placeholder = {}
-    for index, item  in enumerate(data_dict):
-        if index % 8 == 0:
-            placeholder["timestamp"] = item[0]
-        elif index % 8 == 1:
-            placeholder["open"] = item[1]
-        elif index % 8 == 2:
-            placeholder["high"] = item[2]
-        elif index % 8 == 3:
-            placeholder["low"] = item[3]
-        elif index % 8 == 4:
-            placeholder["close"] = item[4]
-        elif index % 8 == 5:
-            placeholder["volume"] = item[5]
-        elif index % 8 == 6:
-            placeholder["symbol"] = item[6]
-        else:
-            data.append(placeholder)
-            placeholder = {}
+    for item in data_list:
+        placeholder = {
+            "timestamp":item[0],
+            "open":item[1],
+            "high":item[2],
+            "low":item[3],
+            "close":item[4],
+            "volume":item[5],
+            "symbol":item[6]
+        }
+        data.append(placeholder)
     data.sort(key= lambda x : x["timestamp"],reverse=True)
     return data
 
