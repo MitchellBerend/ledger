@@ -37,12 +37,18 @@ class test(unittest.TestCase):
             ("2020-01-02",80,80,80,80,1000,"MSFT"),
             ("2020-01-03",80,80,80,80,1000,"MSFT"),
             ("2020-01-04",80,80,80,80,1000,"MSFT"),
+            ("2020-01-05",80,80,80,80,1000,"MSFT"),
+            ("2020-01-06",80,80,80,80,1000,"MSFT"),
+            ("2020-01-07",80,80,80,80,1000,"MSFT")
         ]
         ordered = [
-            {"timestamp": "2020-01-01","open": 80,"high": 80,"low": 80,"close": 80,"volume": 1000,"symbol": "MSFT"},
-            {"timestamp": "2020-01-02","open": 80,"high": 80,"low": 80,"close": 80,"volume": 1000,"symbol": "MSFT"},
+            {"timestamp": "2020-01-07","open": 80,"high": 80,"low": 80,"close": 80,"volume": 1000,"symbol": "MSFT"},
+            {"timestamp": "2020-01-06","open": 80,"high": 80,"low": 80,"close": 80,"volume": 1000,"symbol": "MSFT"},
+            {"timestamp": "2020-01-05","open": 80,"high": 80,"low": 80,"close": 80,"volume": 1000,"symbol": "MSFT"},
+            {"timestamp": "2020-01-04","open": 80,"high": 80,"low": 80,"close": 80,"volume": 1000,"symbol": "MSFT"},
             {"timestamp": "2020-01-03","open": 80,"high": 80,"low": 80,"close": 80,"volume": 1000,"symbol": "MSFT"},
-            {"timestamp": "2020-01-04","open": 80,"high": 80,"low": 80,"close": 80,"volume": 1000,"symbol": "MSFT"},]
+            {"timestamp": "2020-01-02","open": 80,"high": 80,"low": 80,"close": 80,"volume": 1000,"symbol": "MSFT"},
+            {"timestamp": "2020-01-01","open": 80,"high": 80,"low": 80,"close": 80,"volume": 1000,"symbol": "MSFT"}]
         for _ in range(100):
             unordered.insert(random.choice([i for i in range(7)]),unordered.pop())
         self.assertEqual(api_caller_lib.format_data(unordered),ordered)
