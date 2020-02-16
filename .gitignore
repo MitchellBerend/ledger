@@ -2,3 +2,4 @@
 report/lib/
 docker-compose.yml
 **/Dockerfile
+api_caller/api_caller_lib/__pycache__/
