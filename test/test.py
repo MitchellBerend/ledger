@@ -4,7 +4,6 @@ sys.path.append("/home/mitchell/ledger/api_caller")
 import random
 import api_caller_lib
 
-
 class test(unittest.TestCase):
     
     def test_retrieve_data(self):
