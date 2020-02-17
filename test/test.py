@@ -269,7 +269,35 @@ class test(unittest.TestCase):
         self.assertEqual(track_handler_lib.check_profile_for_existing_data(""),False)
 
     def test_get_value_from_api(self):
-        pass
+        class mock_socket:
+            def __init__(self,*args,**kwargs):
+                self.data = """[{
+            "timestamp":"2020-02-14 16:00:00",
+            "open":100.0,
+            "high":100.0,
+            "low":100.0,
+            "close":100.0,
+            "volume":20,
+            "symbol":"NSRGY"
+            }]""".encode("utf-8")
+
+            def connect(self,*args,**kwargs):
+                pass
+
+            def send(self,*args,**kwargs):
+                pass
+
+            def recv(self, *args, **kwargs):
+                rv = self.data
+                self.data = ""
+                return rv
+
+        def mock_gethostbyname(*args,**kwargs):
+            return ""
+
+        track_handler_lib.socket.gethostbyname = mock_gethostbyname
+        track_handler_lib.socket.socket = mock_socket
+        self.assertEqual(track_handler_lib.get_value_from_api(""),100.0)
 
 
 if __name__ == "__main__":
