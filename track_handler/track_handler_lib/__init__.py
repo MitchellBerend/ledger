@@ -43,7 +43,6 @@ def check_profile_for_existing_data(symbol,**login_info):
     try:
         cur = con.cursor()
         cur.execute(f"""SELECT * FROM profile WHERE name='{symbol.upper()}';""")
-        print(f"""SELECT * FROM profile WHERE name='{symbol.upper()}';""")
         count = cur.fetchall()
     finally:
         con.close()
@@ -56,9 +55,6 @@ def delete_data_from_profile(symbol,**login_info):
     try:
         cur = con.cursor()
         cur.execute(f"""DELETE FROM profile WHERE name='{symbol}';""")
-        print("pass")
-    except:
-        print("catch")
     finally:
         con.commit()
         con.close()
