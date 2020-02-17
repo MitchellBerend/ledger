@@ -18,8 +18,6 @@ Displays current status in json format.
 	Takes the following parameters:
 	 1. symbol
 
-  
-Teste
 
 ## tracker
 
