@@ -5,42 +5,37 @@ from hashlib import sha224
 from datetime import datetime
 
 
+
 def retrieve_data(symbol, **login):
     """
     Takes a symbol and login parameters and returns the data.
     """
     con = sql.connect(**login)
-    cur = con.cursor()
-    cur.execute(
-        f"""SELECT DISTINCT * FROM {symbol.replace(".","")} order by timestamp;"""
-        )
-    data = cur.fetchall()
-    return data[100:]
+    
+    try:
+        cur = con.cursor()
+        cur.execute(f"""SELECT * FROM {symbol.replace(".","")} order by timestamp;""")
+        data = cur.fetchall()
+    finally:
+        con.close()
+    return data[:100]
 
-def format_data(data_dict):
+def format_data(data_list):
     """
     Takes a list of tuples from the retrieve data function and reformats it into json format.
     """
     data = []
-    placeholder = {}
-    for index, item  in enumerate(data_dict):
-        if index % 8 == 0:
-            placeholder["timestamp"] = item[0]
-        elif index % 8 == 1:
-            placeholder["open"] = item[1]
-        elif index % 8 == 2:
-            placeholder["high"] = item[2]
-        elif index % 8 == 3:
-            placeholder["low"] = item[3]
-        elif index % 8 == 4:
-            placeholder["close"] = item[4]
-        elif index % 8 == 5:
-            placeholder["volume"] = item[5]
-        elif index % 8 == 6:
-            placeholder["symbol"] = item[6]
-        else:
-            data.append(placeholder)
-            placeholder = {}
+    for item in data_list:
+        placeholder = {
+            "timestamp":item[0],
+            "open":item[1],
+            "high":item[2],
+            "low":item[3],
+            "close":item[4],
+            "volume":item[5],
+            "symbol":item[6]
+        }
+        data.append(placeholder)
     data.sort(key= lambda x : x["timestamp"],reverse=True)
     return data
 
@@ -98,15 +93,17 @@ def add_to_db(data,**login):
     Outputs the result of the queries to stdout.
     """
     con = sql.connect(**login)
-    cur = con.cursor()
-    cur.execute(f"""CREATE TABLE IF NOT EXISTS {data[0]["symbol"].replace(".","")} (timestamp varchar(20),open float, high float,low float,close float, volume int, symbol varchar(10), id varchar(56));""")
-    con.commit()
-    for account in data:
-        _hash = sha224(bytes(str(datetime.now()),"utf-8")).hexdigest()
-        try:
-            cur.execute(f"""INSERT INTO {account["symbol"].replace(".","")} values('{account["timestamp"]}', {account["open"]}, {account["high"]}, {account["low"]}, {account["close"]}, {account["volume"]}, '{account["symbol"]}', '{_hash}');""")
-            print(f"""query INSERT INTO {account["symbol"].replace(".","")} values('{account["timestamp"]}', {account["open"]}, {account["high"]}, {account["low"]}, {account["close"]}, {account["volume"]}, '{account["symbol"]}', '{_hash}'); executed""")
-        except:
-            print(f"""query INSERT INTO {account["symbol"].replace(".","")} values('{account["timestamp"]}', {account["open"]}, {account["high"]}, {account["low"]}, {account["close"]}, {account["volume"]}, '{account["symbol"]}', '{_hash}'); not executed""")
-    con.commit()
-    con.close()
+    try:
+        cur = con.cursor()
+        cur.execute(f"""CREATE TABLE IF NOT EXISTS {data[0]["symbol"].replace(".","")} (timestamp varchar(20),open float, high float,low float,close float, volume int, symbol varchar(10), id varchar(56));""")
+        con.commit()
+        for account in data:
+            _hash = sha224(bytes(str(datetime.now()),"utf-8")).hexdigest()
+            try:
+                cur.execute(f"""INSERT INTO {account["symbol"].replace(".","")} values('{account["timestamp"]}', {account["open"]}, {account["high"]}, {account["low"]}, {account["close"]}, {account["volume"]}, '{account["symbol"]}', '{_hash}');""")
+                print(f"""query INSERT INTO {account["symbol"].replace(".","")} values('{account["timestamp"]}', {account["open"]}, {account["high"]}, {account["low"]}, {account["close"]}, {account["volume"]}, '{account["symbol"]}', '{_hash}'); executed""")
+            except:
+                print(f"""query INSERT INTO {account["symbol"].replace(".","")} values('{account["timestamp"]}', {account["open"]}, {account["high"]}, {account["low"]}, {account["close"]}, {account["volume"]}, '{account["symbol"]}', '{_hash}'); not executed""")
+    finally:
+        con.commit()
+        con.close()

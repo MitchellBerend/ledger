@@ -29,7 +29,7 @@ Displays current status in json format.
 	 2. amount
 - DELETE
 	Sends a sell order to respective brokers. Once confirmation is received, deletes/modifies the entry in the 	database
-	1. symbol
+	 1. symbol
 	
 	
 	

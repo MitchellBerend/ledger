@@ -98,15 +98,15 @@ def add_wallet(symbol, **login_info):
     value = get_value_from_api(symbol)
     assert value != 0, "Amount was not retrieved."
     con = sql.connect(**login_info)
-    fee = value * .0005
-    if fee < 1.25:
-        fee = 1.25
-    elif fee > 29:
-        fee = 29
     try:
         cur = con.cursor()
         cur.execute(f"""SELECT amount FROM profile WHERE name='{symbol}';""")
         amount = float(cur.fetchone()[0])
+        fee = value * amount * .0005
+        if fee < 1.25:
+            fee = 1.25
+        elif fee > 29:
+            fee = 29
         cur.execute(f"""INSERT INTO wallet values('{symbol}', {amount*value});""")
         cur.execute(f"""INSERT INTO wallet values ('{symbol}', {-fee});""")
     finally:
