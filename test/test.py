@@ -221,7 +221,7 @@ class test(unittest.TestCase):
     def test_make_api_request(self):
         class mock_socket:
             def __init__(self,*args,**kwargs):
-                self.data = """[{"close":100}]"""
+                self.data = """[{"close":100}]""".encode("utf-8")
 
             def connect(self,*args,**kwargs):
                 pass
