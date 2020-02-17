@@ -3,21 +3,6 @@ import os
 import requests as r
 from datetime import datetime
 import socket
-"""
-
-CREATE TABLE profile (
-    name varchar(10),
-    price_of_purchase float,
-    date_of_purchase varchar(10),
-    amount int,
-    total_value float
-);
-
-
-test to make sure it works with a period
-"""
-
-
 
 def request_checker(data):
     return data[-1]
@@ -62,7 +47,6 @@ def check_profile_for_existing_data(symbol,**login_info):
         count = cur.fetchall()
     finally:
         con.close()
-    
     if len(count) > 0:
         return True
     return False
@@ -132,15 +116,3 @@ def subtract_wallet(symbol, amount, **login_info):
     finally:
         con.commit()
         con.close()
-
-
-
-
-"""
-
-CREATE TABLE wallet (
-    name varchar(10),
-    amount float
-);
-
-"""
