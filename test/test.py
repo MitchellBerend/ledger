@@ -1,9 +1,10 @@
 import sys
 import unittest
 sys.path.append("/home/mitchell/ledger/api_caller")
+sys.path.append("/home/mitchell/ledger/track_handler")
 import random
 import api_caller_lib
-
+import track_handler_lib
 
 class test(unittest.TestCase):
     
@@ -216,8 +217,32 @@ class test(unittest.TestCase):
         ]
         self.maxDiff = None
         self.assertEqual(api_caller_lib.get_data_alphavantage("NSRGY",unordered),ordered)
-        
+    
+    def test_make_api_request(self):
+        class mock_socket:
+            def __init__(self):
+                self.data = """[{"close":100}]"""
 
+            def connect(self,*args,**kwargs):
+                pass
+
+            def send(self,*args,**kwargs):
+                pass
+
+            def recv(self, *args, **kwargs):
+                rv = self.data
+                self.data = ""
+                return rv 
+        track_handler_lib.socket.socket = mock_socket
+        self.maxDiff = None
+        self.assertEqual(track_handler_lib.make_api_request("test"),100)
+
+
+    def test_check_profile_for_existing_data(self):
+        pass
+
+    def test_get_value_from_api(self):
+        pass
 
 
 if __name__ == "__main__":
