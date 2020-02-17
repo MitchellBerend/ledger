@@ -245,7 +245,28 @@ class test(unittest.TestCase):
 
 
     def test_check_profile_for_existing_data(self):
-        pass
+        class mock_cur:
+            def __init__(self):
+                pass
+
+            def execute(self,a):
+                pass
+
+            def fetchall(self):
+                return []
+
+        class mock_con:
+            def __init__(self,**_):
+                self.cur = mock_cur()
+            
+            def cursor(self):
+                return self.cur
+            
+            def close(self):
+                pass
+        track_handler_lib.sql.connect = mock_con
+        track_handler_lib.sql.cursor = mock_cur
+        self.assertEqual(track_handler_lib.check_profile_for_existing_data(""),False)
 
     def test_get_value_from_api(self):
         pass
