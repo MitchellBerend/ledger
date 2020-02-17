@@ -19,6 +19,7 @@ Displays current status in json format.
 	 1. symbol
 
   
+Teste
 
 ## tracker
 
