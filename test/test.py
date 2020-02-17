@@ -232,7 +232,11 @@ class test(unittest.TestCase):
             def recv(self, *args, **kwargs):
                 rv = self.data
                 self.data = ""
-                return rv 
+                return rv
+                
+        def mock_gethostbyname(*args,**kwargs):
+            return ""
+
         track_handler_lib.socket.socket = mock_socket
         self.maxDiff = None
         self.assertEqual(track_handler_lib.make_api_request("test"),100)
