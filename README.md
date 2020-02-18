@@ -40,3 +40,4 @@ Displays current status in json format.
 	Adds or removes a specified amount to the wallet. Takes the following arguments:
 	1. amount
 	2. action (withdraw/deposit)
+
