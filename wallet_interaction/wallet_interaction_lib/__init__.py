@@ -35,4 +35,4 @@ def withdraw_money(amount,**login_info):
     finally:
         con.commit()
         con.close()
-    return f"""Withdrew {-amount} from wallet."""
+    return f"""Withdrew {amount} from wallet."""
