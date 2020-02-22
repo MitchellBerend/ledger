@@ -6,10 +6,11 @@ app = Flask(__name__)
 
 api = Api(app)
 
-@app.route('/')
+
+@app.route("/")
 def index():
-    sock = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
-    sock.connect((socket.gethostbyname("landing_page"),5000))
+    sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    sock.connect((socket.gethostbyname("landing_page"), 5000))
     sock.send(bytes(" ", "utf-8"))
     data = ""
     while True:
@@ -28,10 +29,10 @@ class symbol_data(Resource):
         args = parser.parse_args()
         print(args)
         symbol = args["symbol"]
-        sock = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
-        sock.connect((socket.gethostbyname("api_caller"),5000))
+        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        sock.connect((socket.gethostbyname("api_caller"), 5000))
         sock.send(bytes(symbol, "utf-8"))
-        data = ''
+        data = ""
         while True:
             msg = sock.recv(1024)
             if len(msg) <= 0:
@@ -43,6 +44,7 @@ class symbol_data(Resource):
             return "no data available"
         return jsonify(data)
 
+
 class tracker(Resource):
     def post(self):
         parser = reqparse.RequestParser()
@@ -50,8 +52,8 @@ class tracker(Resource):
         parser.add_argument("amount", required=True)
         args = parser.parse_args()
         data = [args["symbol"], args["amount"], "post"]
-        sock = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
-        sock.connect((socket.gethostbyname("track_handler"),5000))
+        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        sock.connect((socket.gethostbyname("track_handler"), 5000))
         sock.send(bytes(str(data), "utf-8"))
         data = ""
         while True:
@@ -67,8 +69,8 @@ class tracker(Resource):
         args = parser.parse_args()
         symbol = args["symbol"]
         data = [symbol, "delete"]
-        sock = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
-        sock.connect((socket.gethostbyname("track_handler"),5000))
+        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        sock.connect((socket.gethostbyname("track_handler"), 5000))
         sock.send(bytes(str(data), "utf-8"))
         data = ""
         while True:
@@ -78,11 +80,12 @@ class tracker(Resource):
             data += msg.decode("utf-8")
         return data
 
+
 class wallet(Resource):
     def get(self):
         action = ["check"]
-        sock = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
-        sock.connect((socket.gethostbyname("wallet_interaction"),5000))
+        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        sock.connect((socket.gethostbyname("wallet_interaction"), 5000))
         sock.send(bytes(str(action), "utf-8"))
         data = ""
         while True:
@@ -100,8 +103,8 @@ class wallet(Resource):
         if args["action"].lower() != "deposit" and args["action"].lower() != "withdraw":
             return "Action not allowed"
         data = [args["amount"], args["action"].lower()]
-        sock = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
-        sock.connect((socket.gethostbyname("wallet_interaction"),5000))
+        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        sock.connect((socket.gethostbyname("wallet_interaction"), 5000))
         sock.send(bytes(str(data), "utf-8"))
         data = ""
         while True:
@@ -112,9 +115,9 @@ class wallet(Resource):
         return data
 
 
-api.add_resource(wallet, '/wallet')
-api.add_resource(symbol_data, '/symbol_data')
-api.add_resource(tracker, '/tracker')
+api.add_resource(wallet, "/wallet")
+api.add_resource(symbol_data, "/symbol_data")
+api.add_resource(tracker, "/tracker")
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port="8080")
