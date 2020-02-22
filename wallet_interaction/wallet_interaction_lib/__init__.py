@@ -6,7 +6,9 @@ def show_current(**login_info):
     con = sql.connect(**login_info)
     try:
         cur = con.cursor()
-        cur.execute("""SELECT sum(amount) from wallet;""")
+        cur.execute(
+            """SELECT sum(amount) from wallet;"""
+        )
         data = cur.fetchone()[0]
     finally:
         con.commit()
@@ -19,7 +21,9 @@ def deposit_money(amount,**login_info):
     con = sql.connect(**login_info)
     try:
         cur = con.cursor()
-        cur.execute(f"""insert into wallet values ('deposit',{-amount});""")
+        cur.execute(
+            f"""insert into wallet values ('deposit',{-amount});"""
+        )
     finally:
         con.commit()
         con.close()
@@ -31,7 +35,9 @@ def withdraw_money(amount,**login_info):
     con = sql.connect(**login_info)
     try:
         cur = con.cursor()
-        cur.execute(f"""insert into wallet values ('withdraw',{-amount});""")
+        cur.execute(
+            f"""insert into wallet values ('withdraw',{-amount});"""
+        )
     finally:
         con.commit()
         con.close()
