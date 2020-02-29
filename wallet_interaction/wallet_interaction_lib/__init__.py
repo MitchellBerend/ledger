@@ -13,7 +13,8 @@ def show_current(**login_info):
         con.close()
     return data
 
-def deposit_money(amount,**login_info):
+
+def deposit_money(amount, **login_info):
     assert login_info != {}, "Login info not passed as an argument."
     amount = float(amount)
     con = sql.connect(**login_info)
@@ -25,7 +26,8 @@ def deposit_money(amount,**login_info):
         con.close()
     return f"""Deposited {amount} into wallet."""
 
-def withdraw_money(amount,**login_info):
+
+def withdraw_money(amount, **login_info):
     assert login_info != {}, "Login info not passed as an argument."
     amount = float(amount)
     con = sql.connect(**login_info)
@@ -35,4 +37,4 @@ def withdraw_money(amount,**login_info):
     finally:
         con.commit()
         con.close()
-    return f"""Withdrew {-amount} from wallet."""
+    return f"""Withdrew {amount} from wallet."""

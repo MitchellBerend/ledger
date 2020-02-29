@@ -7,7 +7,7 @@
 
 Displays current status in json format.
 
-  
+  Test
   
 
 ## symbol
@@ -18,7 +18,6 @@ Displays current status in json format.
 	Takes the following parameters:
 	 1. symbol
 
-  
 
 ## tracker
 
@@ -41,3 +40,4 @@ Displays current status in json format.
 	Adds or removes a specified amount to the wallet. Takes the following arguments:
 	1. amount
 	2. action (withdraw/deposit)
+

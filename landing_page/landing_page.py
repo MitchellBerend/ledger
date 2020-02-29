@@ -4,14 +4,14 @@ import landing_page_lib
 
 
 database_login_info = {
-    "user":environ["db_user"],
-    "password":environ["db_password"],
-    "database":"profile",
-    "host":socket.gethostbyname("profile_odin")
+    "user": environ["db_user"],
+    "password": environ["db_password"],
+    "database": "profile",
+    "host": socket.gethostbyname("profile_odin"),
 }
 
-sock = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
-sock.bind((socket.gethostname(),5000))
+sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+sock.bind((socket.gethostname(), 5000))
 sock.listen(10)
 while True:
     client, address = sock.accept()
@@ -19,9 +19,9 @@ while True:
     if symbol == " ":
         data = landing_page_lib.get_name_price_amount(**database_login_info)
         print(data)
-        client.send(bytes(str(data),"utf-8"))
+        client.send(bytes(str(data), "utf-8"))
         break
     else:
         print("error")
-        client.send(bytes("landing_page error","utf-8"))
+        client.send(bytes("landing_page error", "utf-8"))
         break
