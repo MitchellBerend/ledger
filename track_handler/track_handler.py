@@ -47,3 +47,18 @@ while True:
         break
     print(data)
     print(f"Sending data to {address}.")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
