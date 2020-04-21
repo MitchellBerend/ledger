@@ -169,7 +169,7 @@ class test(unittest.TestCase):
     "close":100,
     "volume":100,
     "symbol":"AMD"
-    }
+    },
         {
     "timestamp":"2020-04-02 00:00:01",
     "open":100,
@@ -178,7 +178,7 @@ class test(unittest.TestCase):
     "close":100,
     "volume":100,
     "symbol":"AMD"
-    }
+    },
         {
     "timestamp":"2020-04-03 00:00:01",
     "open":100,
@@ -187,7 +187,7 @@ class test(unittest.TestCase):
     "close":100,
     "volume":100,
     "symbol":"AMD"
-    }
+    },
         {
     "timestamp":"2020-04-04 00:00:01",
     "open":100,
@@ -196,7 +196,7 @@ class test(unittest.TestCase):
     "close":100,
     "volume":100,
     "symbol":"AMD"
-    }
+    },
         {
     "timestamp":"2020-04-05 00:00:01",
     "open":100,
