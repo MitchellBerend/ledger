@@ -125,186 +125,91 @@ class test(unittest.TestCase):
     def test_get_data_alphavantage(self):
         class mock_get:
             def __init__(self, *args, **kwargs):
-                self.text = """{
-                    "Meta Data": {
-                    "1. Information": "Intraday (1min) open, high, low, close prices and volume",
-                    "2. Symbol": "NSRGY",
-                    "3. Last Refreshed": "2020-02-14 16:00:00",
-                    "4. Interval": "1min",
-                    "5. Output Size": "Compact",
-                    "6. Time Zone": "US/Eastern"
-                    },
-                    "Time Series (1min)": {
-                    "2020-02-14 16:00:00": {
-                        "1. open": "100",
-                        "2. high": "100",
-                        "3. low": "100",
-                        "4. close": "100",
-                        "5. volume": "20"
-                    },
-                    "2020-02-14 15:59:00": {
-                        "1. open": "100",
-                        "2. high": "100",
-                        "3. low": "100",
-                        "4. close": "100",
-                        "5. volume": "20"
-                    },
-                    "2020-02-14 15:58:00": {
-                        "1. open": "100",
-                        "2. high": "100",
-                        "3. low": "100",
-                        "4. close": "100",
-                        "5. volume": "20"
-                    },
-                    "2020-02-14 15:57:00": {
-                        "1. open": "100",
-                        "2. high": "100",
-                        "3. low": "100",
-                        "4. close": "100",
-                        "5. volume": "20"
-                    },
-                    "2020-02-14 15:56:00": {
-                        "1. open": "100",
-                        "2. high": "100",
-                        "3. low": "100",
-                        "4. close": "100",
-                        "5. volume": "20"
-                    },
-                    "2020-02-14 15:55:00": {
-                        "1. open": "100",
-                        "2. high": "100",
-                        "3. low": "100",
-                        "4. close": "100",
-                        "5. volume": "20"
-                    },
-                    "2020-02-14 15:53:00": {
-                        "1. open": "100",
-                        "2. high": "100",
-                        "3. low": "100",
-                        "4. close": "100",
-                        "5. volume": "20"
-                    },
-                    "2020-02-14 15:52:00": {
-                        "1. open": "100",
-                        "2. high": "100",
-                        "3. low": "100",
-                        "4. close": "100",
-                        "5. volume": "20"
-                    },
-                    "2020-02-14 15:51:00": {
-                        "1. open": "100",
-                        "2. high": "100",
-                        "3. low": "100",
-                        "4. close": "100",
-                        "5. volume": "20"
-                    },
-                    "2020-02-14 15:49:00": {
-                        "1. open": "100",
-                        "2. high": "100",
-                        "3. low": "100",
-                        "4. close": "100",
-                        "5. volume": "20"
-                    }
-                    }
-                    }"""
+                self.text = """{    "Open":{        
+        "2020-04-01T00:00:01.000Z":100,
+        "2020-04-01T00:00:02.000Z":100,
+        "2020-04-01T00:00:03.000Z":100,
+        "2020-04-01T00:00:04.000Z":100,
+        "2020-04-01T00:00:05.000Z":100}
+    "High":{        
+        "2020-04-01T00:00:01.000Z":100,
+        "2020-04-01T00:00:02.000Z":100,
+        "2020-04-01T00:00:03.000Z":100,
+        "2020-04-01T00:00:04.000Z":100,
+        "2020-04-01T00:00:05.000Z":100}
+    "Low":{        
+        "2020-04-01T00:00:01.000Z":100,
+        "2020-04-01T00:00:02.000Z":100,
+        "2020-04-01T00:00:03.000Z":100,
+        "2020-04-01T00:00:04.000Z":100,
+        "2020-04-01T00:00:05.000Z":100}
+    "Close":{        
+        "2020-04-01T00:00:01.000Z":100,
+        "2020-04-01T00:00:02.000Z":100,
+        "2020-04-01T00:00:03.000Z":100,
+        "2020-04-01T00:00:04.000Z":100,
+        "2020-04-01T00:00:05.000Z":100}
+    "Volume":{        
+        "2020-04-01T00:00:01.000Z":100,
+        "2020-04-01T00:00:02.000Z":100,
+        "2020-04-01T00:00:03.000Z":100,
+        "2020-04-01T00:00:04.000Z":100,
+        "2020-04-01T00:00:05.000Z":100}
+}
+                """
 
         api_caller_lib.r.get = mock_get
         unordered = ""
         ordered = [
-            {
-                "timestamp": "2020-02-14 16:00:00",
-                "open": 100.0,
-                "high": 100.0,
-                "low": 100.0,
-                "close": 100.0,
-                "volume": 20,
-                "symbol": "NSRGY",
-            },
-            {
-                "close": 100.0,
-                "high": 100.0,
-                "low": 100.0,
-                "open": 100.0,
-                "symbol": "NSRGY",
-                "timestamp": "2020-02-14 15:59:00",
-                "volume": 20,
-            },
-            {
-                "close": 100.0,
-                "high": 100.0,
-                "low": 100.0,
-                "open": 100.0,
-                "symbol": "NSRGY",
-                "timestamp": "2020-02-14 15:58:00",
-                "volume": 20,
-            },
-            {
-                "close": 100.0,
-                "high": 100.0,
-                "low": 100.0,
-                "open": 100.0,
-                "symbol": "NSRGY",
-                "timestamp": "2020-02-14 15:57:00",
-                "volume": 20,
-            },
-            {
-                "close": 100.0,
-                "high": 100.0,
-                "low": 100.0,
-                "open": 100.0,
-                "symbol": "NSRGY",
-                "timestamp": "2020-02-14 15:56:00",
-                "volume": 20,
-            },
-            {
-                "close": 100.0,
-                "high": 100.0,
-                "low": 100.0,
-                "open": 100.0,
-                "symbol": "NSRGY",
-                "timestamp": "2020-02-14 15:55:00",
-                "volume": 20,
-            },
-            {
-                "close": 100.0,
-                "high": 100.0,
-                "low": 100.0,
-                "open": 100.0,
-                "symbol": "NSRGY",
-                "timestamp": "2020-02-14 15:53:00",
-                "volume": 20,
-            },
-            {
-                "close": 100.0,
-                "high": 100.0,
-                "low": 100.0,
-                "open": 100.0,
-                "symbol": "NSRGY",
-                "timestamp": "2020-02-14 15:52:00",
-                "volume": 20,
-            },
-            {
-                "close": 100.0,
-                "high": 100.0,
-                "low": 100.0,
-                "open": 100.0,
-                "symbol": "NSRGY",
-                "timestamp": "2020-02-14 15:51:00",
-                "volume": 20,
-            },
-            {
-                "close": 100.0,
-                "high": 100.0,
-                "low": 100.0,
-                "open": 100.0,
-                "symbol": "NSRGY",
-                "timestamp": "2020-02-14 15:49:00",
-                "volume": 20,
-            },
-        ]
+    {
+    "timestamp":"2020-04-01 00:00:01",
+    "open":100,
+    "high":100,
+    "low":100,
+    "close":100,
+    "volume":100,
+    "symbol":"AMD"
+    }
+        {
+    "timestamp":"2020-04-02 00:00:01",
+    "open":100,
+    "high":100,
+    "low":100,
+    "close":100,
+    "volume":100,
+    "symbol":"AMD"
+    }
+        {
+    "timestamp":"2020-04-03 00:00:01",
+    "open":100,
+    "high":100,
+    "low":100,
+    "close":100,
+    "volume":100,
+    "symbol":"AMD"
+    }
+        {
+    "timestamp":"2020-04-04 00:00:01",
+    "open":100,
+    "high":100,
+    "low":100,
+    "close":100,
+    "volume":100,
+    "symbol":"AMD"
+    }
+        {
+    "timestamp":"2020-04-05 00:00:01",
+    "open":100,
+    "high":100,
+    "low":100,
+    "close":100,
+    "volume":100,
+    "symbol":"AMD"
+    }
+]
         self.maxDiff = None
         self.assertEqual(
-            api_caller_lib.get_data_alphavantage("NSRGY", unordered), ordered
+            api_caller_lib.get_data_alphavantage("AMD", unordered), ordered
         )
 
     def test_make_api_request(self):

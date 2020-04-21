@@ -12,6 +12,7 @@ requests = "*"
 mysql-connector-python = "*"
 flask = "*"
 flask-restful = "*"
+yfinance = "*"
 
 [requires]
 python_version = "3.7"
