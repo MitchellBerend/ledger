@@ -2,12 +2,11 @@
 
   
   
-
+test
 ## landing page
 
 Displays current status in json format.
 
-  Test
   
 
 ## symbol

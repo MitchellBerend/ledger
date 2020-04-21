@@ -13,7 +13,7 @@ def retrieve_data(symbol, **login):
 
     try:
         cur = con.cursor()
-        cur.execute(f"""SELECT * FROM {symbol.replace(".","")} order by timestamp;""")
+        cur.execute(f"""SELECT * FROM {symbol.replace(".", "")} order by timestamp;""")
         data = cur.fetchall()
     finally:
         con.close()
@@ -53,7 +53,6 @@ def get_data_alphavantage(symbol, api_key):
     }
     url = "https://www.alphavantage.co/query?"
     try:
-        print()
         get = r.get(url=url, params=headers, timeout=1.5).text
     except r.exceptions.ConnectTimeout:
         return None
@@ -100,21 +99,21 @@ def add_to_db(data, **login):
     try:
         cur = con.cursor()
         cur.execute(
-            f"""CREATE TABLE IF NOT EXISTS {data[0]["symbol"].replace(".","")} (timestamp varchar(20),open float, high float,low float,close float, volume int, symbol varchar(10), id varchar(56));"""
+            f"""CREATE TABLE IF NOT EXISTS {data[0]["symbol"].replace(".", "")} (timestamp varchar(20),open float, high float,low float,close float, volume int, symbol varchar(10), id varchar(56));"""
         )
         con.commit()
         for account in data:
             _hash = sha224(bytes(str(datetime.now()), "utf-8")).hexdigest()
             try:
                 cur.execute(
-                    f"""INSERT INTO {account["symbol"].replace(".","")} values('{account["timestamp"]}', {account["open"]}, {account["high"]}, {account["low"]}, {account["close"]}, {account["volume"]}, '{account["symbol"]}', '{_hash}');"""
+                    f"""INSERT INTO {account["symbol"].replace(".", "")} values('{account["timestamp"]}', {account["open"]}, {account["high"]}, {account["low"]}, {account["close"]}, {account["volume"]}, '{account["symbol"]}', '{_hash}');"""
                 )
                 print(
-                    f"""query INSERT INTO {account["symbol"].replace(".","")} values('{account["timestamp"]}', {account["open"]}, {account["high"]}, {account["low"]}, {account["close"]}, {account["volume"]}, '{account["symbol"]}', '{_hash}'); executed"""
+                    f"""query INSERT INTO {account["symbol"].replace(".", "")} values('{account["timestamp"]}', {account["open"]}, {account["high"]}, {account["low"]}, {account["close"]}, {account["volume"]}, '{account["symbol"]}', '{_hash}'); executed"""
                 )
             except:
                 print(
-                    f"""query INSERT INTO {account["symbol"].replace(".","")} values('{account["timestamp"]}', {account["open"]}, {account["high"]}, {account["low"]}, {account["close"]}, {account["volume"]}, '{account["symbol"]}', '{_hash}'); not executed"""
+                    f"""query INSERT INTO {account["symbol"].replace(".", "")} values('{account["timestamp"]}', {account["open"]}, {account["high"]}, {account["low"]}, {account["close"]}, {account["volume"]}, '{account["symbol"]}', '{_hash}'); not executed"""
                 )
     finally:
         con.commit()
