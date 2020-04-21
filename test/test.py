@@ -142,8 +142,6 @@ class test(unittest.TestCase):
                 "symbol": "MSFT",
             },
         ]
-        for _ in range(100):
-            unordered.insert(random.choice([i for i in range(7)]), unordered.pop())
         self.assertEqual(api_caller_lib.format_data("MSFT",unordered), ordered)
 
     def test_make_api_request(self):
