@@ -78,7 +78,7 @@ class test(unittest.TestCase):
         "2020-04-01T00:00:05.000Z":100}}
         ordered = [
             {
-                "timestamp": "2020-01-05",
+                "timestamp": "2020-04-01 00:00:01",
                 "open": 100,
                 "high": 100,
                 "low": 100,
@@ -87,7 +87,7 @@ class test(unittest.TestCase):
                 "symbol": "MSFT",
             },
             {
-                "timestamp": "2020-01-04",
+                "timestamp": "2020-04-01 00:00:02",
                 "open": 100,
                 "high": 100,
                 "low": 100,
@@ -96,7 +96,7 @@ class test(unittest.TestCase):
                 "symbol": "MSFT",
             },
             {
-                "timestamp": "2020-01-03",
+                "timestamp": "2020-04-01 00:00:03",
                 "open": 100,
                 "high": 100,
                 "low": 100,
@@ -105,7 +105,7 @@ class test(unittest.TestCase):
                 "symbol": "MSFT",
             },
             {
-                "timestamp": "2020-01-02",
+                "timestamp": "2020-04-01 00:00:04",
                 "open": 100,
                 "high": 100,
                 "low": 100,
@@ -114,7 +114,7 @@ class test(unittest.TestCase):
                 "symbol": "MSFT",
             },
             {
-                "timestamp": "2020-01-01",
+                "timestamp": "2020-04-01 00:00:05",
                 "open": 100,
                 "high": 100,
                 "low": 100,
