@@ -1,6 +1,7 @@
 import os
 import requests as r
 import mysql.connector as sql
+import yfinance as yf
 from hashlib import sha224
 from datetime import datetime
 
@@ -20,74 +21,33 @@ def retrieve_data(symbol, **login):
     return data[:100]
 
 
-def format_data(data_list):
-    """
-    Takes a list of tuples from the retrieve data function and reformats it into json format.
-    """
+def format_data(symbol,data_list):
     data = []
-    for item in data_list:
-        placeholder = {
-            "timestamp": item[0],
-            "open": item[1],
-            "high": item[2],
-            "low": item[3],
-            "close": item[4],
-            "volume": item[5],
-            "symbol": item[6],
-        }
-        data.append(placeholder)
+    dates = list(data_list["Open"].keys())
+    for date in dates:
+        data.append(
+            {
+            "timestamp": date[:9] + " " + date[11:18],
+            "open": data_list["Open"][date],
+            "high": data_list["High"][date],
+            "low": data_list["Low"][date],
+            "close": data_list["Close"][date],
+            "volume": data_list["Volume"][date],
+            "symbol": symbol
+            }
+        )
     data.sort(key=lambda x: x["timestamp"], reverse=True)
+    return data[:100]
+
+
+def get_data_yahoo(symbol):
+    ticker = yf.Ticker(symbol)
+    data = eval(ticker.history(period="5d",interval="15m").to_json(date_format='iso'))
+    del data["Dividends"], data["Stock Splits"]
     return data
 
-
 def get_data_alphavantage(symbol, api_key):
-    """
-    returns data if call succeeds, returns none otherwise.
-    Makes an external api call in the case the data is not already cached.
-    """
-    headers = {
-        "function": "TIME_SERIES_INTRADAY",
-        "symbol": f"{symbol}",
-        "interval": "15min",
-        "apikey": api_key,
-    }
-    url = "https://www.alphavantage.co/query?"
-    try:
-        get = r.get(url=url, params=headers, timeout=1.5).text
-    except r.exceptions.ConnectTimeout:
-        return None
-    except r.exceptions.ReadTimeout:
-        return None
-    if "error" not in get and "Note" not in get:
-        get = get.split("\n")[10:-3]
-        placeholder = [item.strip()[1:-1] for item in get if "}" not in item]
-        # for item in get:
-        #    if item.strip() != "},":
-        #        placeholder.append(item.strip()[1:-1])
-        del get, url, headers
-        data = []
-        current_dict = {}
-        for index, item in enumerate(placeholder):
-            conversion_dict = {
-                0: ["timestamp", "item[:-3]"],
-                1: ["open", "float(item[11:-1])"],
-                2: ["high", "float(item[11:-1])"],
-                3: ["low", "float(item[10:-1])"],
-                4: ["close", "float(item[12:-1])"],
-            }
-            if index % 6 in conversion_dict:
-                current_dict[conversion_dict[index % 6][0]] = eval(
-                    conversion_dict[index % 6][1]
-                )
-            else:
-                current_dict["volume"] = int(item[13:])
-                current_dict["symbol"] = f"{symbol}"
-                data.append(current_dict)
-                current_dict = {}
-        data.sort(key=lambda x: x["timestamp"], reverse=True)
-        return data
-    return None
-
+    return get_data_yahoo(symbol)
 
 def add_to_db(data, **login):
     """
