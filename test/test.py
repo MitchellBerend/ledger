@@ -46,7 +46,7 @@ class test(unittest.TestCase):
 
 
     def test_format_data(self):
-        unordered = {    "Open":{        
+        unordered = {"Open":{        
         "2020-04-01T00:00:01.000Z":100,
         "2020-04-01T00:00:02.000Z":100,
         "2020-04-01T00:00:03.000Z":100,
@@ -123,7 +123,9 @@ class test(unittest.TestCase):
                 "symbol": "MSFT",
             },
         ]
+        self.maxDiff = None
         self.assertEqual(api_caller_lib.format_data("MSFT",unordered), ordered)
+
 
     def test_make_api_request(self):
         class mock_socket:
