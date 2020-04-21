@@ -27,7 +27,7 @@ def format_data(symbol,data_list):
     for date in dates:
         data.append(
             {
-            "timestamp": date[:9] + " " + date[11:18],
+            "timestamp": date[:10] + " " + date[11:19],
             "open": data_list["Open"][date],
             "high": data_list["High"][date],
             "low": data_list["Low"][date],
