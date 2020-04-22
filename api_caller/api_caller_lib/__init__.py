@@ -22,11 +22,8 @@ def retrieve_data(symbol, **login):
 
 
 def format_data(symbol,data_list):
-    data = []
-    dates = list(data_list["Open"].keys())
-    for date in dates:
-        data.append(
-            {
+    data = [
+        {   
             "timestamp": date[:10] + " " + date[11:19],
             "open": data_list["Open"][date],
             "high": data_list["High"][date],
@@ -34,11 +31,11 @@ def format_data(symbol,data_list):
             "close": data_list["Close"][date],
             "volume": data_list["Volume"][date],
             "symbol": symbol
-            }
-        )
+        }
+        for date in list(data_list["Open"].keys())
+    ]
     data.sort(key=lambda x: x["timestamp"], reverse=True)
     return data[:100]
-
 
 def get_data_yahoo(symbol):
     ticker = yf.Ticker(symbol)
