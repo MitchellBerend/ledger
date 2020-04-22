@@ -20,7 +20,7 @@ while True:
     symbol = client.recv(10).decode("utf-8").upper()
     print(symbol)
     data = api_caller_lib.get_data_alphavantage(
-        symbol, environ["api_caller"]
+        symbol
     )
     api_caller_lib.add_to_db(data, **database_login_info)
     print(data)

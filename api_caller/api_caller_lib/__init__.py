@@ -43,7 +43,7 @@ def get_data_yahoo(symbol):
     del data["Dividends"], data["Stock Splits"]
     return data
 
-def get_data_alphavantage(symbol, api_key):
+def get_data_alphavantage(symbol):
     return format_data(symbol,get_data_yahoo(symbol))
 
 def add_to_db(data, **login):
