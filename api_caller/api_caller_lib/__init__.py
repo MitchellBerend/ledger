@@ -47,7 +47,7 @@ def get_data_yahoo(symbol):
     return data
 
 def get_data_alphavantage(symbol, api_key):
-    return get_data_yahoo(symbol)
+    return format_data(symbol,get_data_yahoo(symbol))
 
 def add_to_db(data, **login):
     """

@@ -21,19 +21,9 @@ while True:
     print(symbol)
     data = api_caller_lib.get_data_alphavantage(
         symbol, environ["api_caller"]
-    )  # make alphavatnage api call
-    if data == None:
-        print(data)
-        data = api_caller_lib.retrieve_data(symbol, **database_login_info)
-        data = api_caller_lib.format_data(data)
-        print("data from cache")
-        client.send(bytes(str(data), "utf-8"))
-        print(data)
-        print("none")
-        break
-    else:
-        api_caller_lib.add_to_db(data, **database_login_info)
-        client.send(bytes(str(data), "utf-8"))
-        print(data)
-        break
+    )
+    api_caller_lib.add_to_db(data, **database_login_info)
+    print(data)
+    client.send(bytes(str(data), "utf-8"))
     print(f"Sending data to {address}.")
+    break
