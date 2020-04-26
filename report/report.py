@@ -5,7 +5,6 @@ import socket
 import lib
 from time import time
 
-c = time()
 
 database_login_info = {
     "user": environ["db_user"],
@@ -13,6 +12,9 @@ database_login_info = {
     "database": "profile",
     "host": socket.gethostbyname("profile_odin"),
 }
+
+lib.insert_total_diff(**database_login_info)
+
 total_res = 0
 body = ""
 symbols = lib.get_symbols(**database_login_info)
@@ -40,4 +42,3 @@ with smtplib.SMTP(host="smtp.gmail.com", port=587) as smtp:
     print(msg)
     smtp.sendmail(environ["email"], environ["target_email"], msg)
 
-print(f"""process took {time()-c} seconds""")
