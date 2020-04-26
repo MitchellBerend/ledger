@@ -25,7 +25,7 @@ def call_api(symbol):
             break
         data += msg.decode("utf-8")
     sleep(.5)
-    return data
+    return eval(data)
 
 
 def add_data_to_db(data, **database_login_info):
@@ -35,10 +35,10 @@ def add_data_to_db(data, **database_login_info):
             con = sql.connect(**database_login_info)
             cur = con.cursor()
             print(
-                f"""INSERT INTO cache.{item["symbol"].replace(".","")} values('{item["timestamp"]}',{round(item["open"],2)}, {round(item["high"],2)}, {round(item["low"],2)}, {round(item["close"],2)}, {item["volume"]}, '{item["symbol"]}', '{_hash}');"""
+                f"""INSERT INTO cache.{item["symbol"].replace(".","")} values('{item["timestamp"]}', {round(item["open"],2)} , {round(item["high"],2)}, {round(item["low"],2)}, {round(item["close"],2)}, {item["volume"]}, '{item["symbol"]}', '{_hash}');"""
             )
             cur.execute(
-                f"""INSERT INTO cache.{item["symbol"].replace(".","")} values('{item["timestamp"]}' , {item["open"]} , {item["high"]} , {item["low"]}, {item["close"]}, {item["volume"]}, '{item["symbol"]}', '{_hash}' );"""
+                f"""INSERT INTO cache.{item["symbol"].replace(".","")} values('{item["timestamp"]}', {item["open"]}, {item["high"]}, {item["low"]}, {item["close"]}, {item["volume"]}, '{item["symbol"]}', '{_hash}' );"""
             )
         finally:
             con.commit()
