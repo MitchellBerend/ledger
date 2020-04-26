@@ -1,52 +1,30 @@
 import mysql.connector as sql
-from os import environ
 import requests as r
 import hashlib
+import socket
 from datetime import datetime
-from socket import gethostbyname
 from time import sleep
+from os import environ
 
 database_login_info = {
     "user": environ["db_user"],
     "password": environ["db_password"],
     "database": "cache",
-    "host": gethostbyname("portfolio-db"),
+    "host": socket.gethostbyname("portfolio-db"),
 }
 
 
-def call_alpha_api(symbol):
-    headers = {
-        "function": "TIME_SERIES_INTRADAY",
-        "symbol": f"{symbol}",
-        "interval": "15min",
-        "apikey": environ["api_caller"],
-    }
-    url = "https://www.alphavantage.co/query?"
-    get = r.get(url=url, params=headers)
-    del url, headers
-    get = get.text
-    get = get.split("\n")[10:-3]
-    placeholder = [item.strip()[1:-1] for item in get if item.strip() != "},"]
-    del get
-    data = []
-    current_dict = {}
-    for index, item in enumerate(placeholder):
-        conversion_dict = {
-            0: ["timestamp", "item[:-3]"],
-            1: ["open", "float(item[11:-1])"],
-            2: ["high", "float(item[11:-1])"],
-            3: ["low", "float(item[10:-1])"],
-            4: ["close", "float(item[12:-1])"],
-        }
-        if (index % 6) in conversion_dict:
-            current_dict[conversion_dict[index % 6][0]] = eval(
-                conversion_dict[index % 6][1]
-            )
-        else:
-            current_dict["volume"] = int(item[13:])
-            current_dict["symbol"] = f"{symbol}"
-            data.append(current_dict)
-            current_dict = {}
+def call_api(symbol):
+    sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    sock.connect((socket.gethostbyname("api_caller"), 5000))
+    sock.send(bytes(symbol, "utf-8"))
+    data = ""
+    while True:
+        msg = sock.recv(1024)
+        if len(msg) <= 0:
+            break
+        data += msg.decode("utf-8")
+    sleep(.5)
     return data
 
 
@@ -112,7 +90,7 @@ if __name__ == "__main__":
     symbols = get_all_symbols(**database_login_info)
     if symbols != None:
         for symbol in symbols:
-            data = call_alpha_api(symbol)
+            data = call_api(symbol)
             add_data_to_db(data, **database_login_info)
             delete_dupes(symbol, **database_login_info)
             sleep(12)
