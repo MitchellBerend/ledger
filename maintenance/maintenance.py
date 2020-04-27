@@ -93,6 +93,6 @@ if __name__ == "__main__":
             data = call_api(symbol)
             add_data_to_db(data, **database_login_info)
             delete_dupes(symbol, **database_login_info)
-            sleep(12)
+            sleep(2)
     else:
         exit()
