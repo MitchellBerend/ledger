@@ -23,10 +23,10 @@ for symbol in symbols:
         total,
         percentage,
         current,
-        _100ra,
+        _5ra,
         price_of_purchase,
     ) = lib.get_total_percentage_current_value_100ra(symbol, **database_login_info)
-    body += f"""{str(symbol)}:\n\t100ra:\t\t\t\t{str(_100ra)}\n\tCurrent\t\t\t{current}\n\tBought for:\t\t{price_of_purchase}\n\tCurrent perf:\t\t{str(total)}\n\t\t\t\t\t\t\t\t{str(percentage)}%\n\n"""
+    body += f"""{str(symbol)}:\n\t5ra:\t\t\t\t{str(_5ra)}\n\tCurrent\t\t\t{current}\n\tBought for:\t\t{price_of_purchase}\n\tCurrent perf:\t\t{str(total)}\n\t\t\t\t\t\t\t\t{str(percentage)}%\n\n"""
     total_res += total
 
 body += f"""\nTotal combined: {round(total_res,2)}\n\n\t\tThis report was generated automatically by Mitchell Berendhuysen"""
