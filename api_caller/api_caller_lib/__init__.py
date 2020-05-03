@@ -14,7 +14,7 @@ def retrieve_data(symbol, **login):
 
     try:
         cur = con.cursor()
-        cur.execute(f"""SELECT * FROM {symbol.replace(".", "")} order by timestamp;""")
+        cur.execute(f"""SELECT * FROM cache WHERE symbol_id=(SELECT symbol_id FROM symbol WHERE symbol='{symbol}') ORDER BY timestamp;""")
         data = cur.fetchall()
     finally:
         con.close()
@@ -25,9 +25,6 @@ def format_data(symbol,data_list):
     data = [
         {   
             "timestamp": date[:10] + " " + date[11:19],
-            "open": data_list["Open"][date],
-            "high": data_list["High"][date],
-            "low": data_list["Low"][date],
             "close": data_list["Close"][date],
             "volume": data_list["Volume"][date],
             "symbol": symbol
@@ -56,21 +53,24 @@ def add_to_db(data, **login):
     try:
         cur = con.cursor()
         cur.execute(
-            f"""CREATE TABLE IF NOT EXISTS {data[0]["symbol"].replace(".", "")} (timestamp varchar(20),open float, high float,low float,close float, volume int, symbol varchar(10), id varchar(56));"""
+            f"""SELECT symbol_id FROM symbol WHERE symbol='{data[0]['symbol']}';"""
         )
+        check = cur.fetchall()
+        if not check:
+            cur.execute(
+                f"""INSERT INTO symbol VALUES ('{data[0]["symbol"]}', (COUNT(SELECT DISTINCT * FROM cache))  ) ;"""
+            )
         con.commit()
         for account in data:
             _hash = sha224(bytes(str(datetime.now()), "utf-8")).hexdigest()
             try:
                 cur.execute(
-                    f"""INSERT INTO {account["symbol"].replace(".", "")} values('{account["timestamp"]}', {account["open"]}, {account["high"]}, {account["low"]}, {account["close"]}, {account["volume"]}, '{account["symbol"]}', '{_hash}');"""
+                f"""INSERT INTO cache VALUES ('{account["timestamp"]}', {account["close"]}, {account["volume"]}, (SELECT symbol_id FROM symbol WHERE symbol='{account["symbol"]}'), '{_hash}' );"""
                 )
-                print(
-                    f"""query INSERT INTO {account["symbol"].replace(".", "")} values('{account["timestamp"]}', {account["open"]}, {account["high"]}, {account["low"]}, {account["close"]}, {account["volume"]}, '{account["symbol"]}', '{_hash}'); executed"""
+                print(f"""INSERT INTO cache VALUES ('{account["timestamp"]}', {account["close"]}, {account["volume"]}, (SELECT symbol_id FROM symbol WHERE symbol='{account["symbol"]}'), '{_hash}' );"""
                 )
             except:
-                print(
-                    f"""query INSERT INTO {account["symbol"].replace(".", "")} values('{account["timestamp"]}', {account["open"]}, {account["high"]}, {account["low"]}, {account["close"]}, {account["volume"]}, '{account["symbol"]}', '{_hash}'); not executed"""
+                print(f"""INSERT INTO cache VALUES ('{account["timestamp"]}', {account["close"]}, {account["volume"]}, (SELECT symbol_id FROM symbol WHERE symbol='{account["symbol"]}'), '{_hash}' );"""
                 )
     finally:
         con.commit()

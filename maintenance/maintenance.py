@@ -9,8 +9,8 @@ from os import environ
 database_login_info = {
     "user": environ["db_user"],
     "password": environ["db_password"],
-    "database": "cache",
-    "host": socket.gethostbyname("portfolio-db"),
+    "database": "odin",
+    "host": socket.gethostbyname("portfolio_db"),
 }
 
 
@@ -35,10 +35,10 @@ def add_data_to_db(data, **database_login_info):
             con = sql.connect(**database_login_info)
             cur = con.cursor()
             print(
-                f"""INSERT INTO cache.{item["symbol"].replace(".","")} values('{item["timestamp"]}', {round(item["open"],2)} , {round(item["high"],2)}, {round(item["low"],2)}, {round(item["close"],2)}, {item["volume"]}, '{item["symbol"]}', '{_hash}');"""
+                f"""INSERT INTO cache VALUES ('{item["timestamp"]}', {round(item["close"],2)}, {item["volume"]}, (SELECT symbol_id FROM symbol WHERE symbol='{item["symbol"]}'), '{_hash}' );"""
             )
             cur.execute(
-                f"""INSERT INTO cache.{item["symbol"].replace(".","")} values('{item["timestamp"]}', {item["open"]}, {item["high"]}, {item["low"]}, {item["close"]}, {item["volume"]}, '{item["symbol"]}', '{_hash}' );"""
+                f"""INSERT INTO cache VALUES ('{item["timestamp"]}', {item["close"]}, {item["volume"]}, (SELECT symbol_id FROM symbol WHERE symbol='{item["symbol"]}'), '{_hash}' );"""
             )
         finally:
             con.commit()
@@ -52,15 +52,15 @@ def delete_dupes(symbol, **database_login_info):
         cur.execute(
             f"""create table placeholder as
                             (
-                            Select *, ROW_NUMBER() over(Partition By timestamp order By timestamp) as rownumber
-                            from {symbol.replace(".","")}
+                            Select *, ROW_NUMBER() over(Partition By timestamp, symbol_id order By timestamp) as rownumber
+                            from cache
                             );"""
         )
         cur.execute(f"""DELETE FROM placeholder WHERE rownumber > 1;""")
         cur.execute(f"""ALTER TABLE placeholder drop rownumber;""")
-        cur.execute(f"""DROP TABLE {symbol.replace(".","")};""")
-        cur.execute(f"""RENAME TABLE placeholder TO {symbol.replace(".","")};""")
-        print(f"""deleted dupes from {symbol.replace(".","")}""")
+        cur.execute(f"""DROP TABLE cache;""")
+        cur.execute(f"""RENAME TABLE placeholder TO cache;""")
+        print(f"""deleted dupes from cache""")
     except:
         print("smtn went wrong")
     finally:
@@ -72,18 +72,14 @@ def get_all_symbols(**database_login_info):
     try:
         con = sql.connect(**database_login_info)
         cur = con.cursor()
-        cur.execute("""show tables;""")
+        cur.execute("""SELECT symbol FROM symbol;""")
         data = [symbol[0] for symbol in cur.fetchall()]
-        data1 = []
-        for symbol in data:
-            cur.execute(f"""SELECT DISTINCT symbol FROM {symbol}""")
-            data1.append(cur.fetchone()[0])
-        con.close()
-        print(data1)
-        return data1
+        return data
     except:
         print("returned none")
         return None
+    finally:
+        con.close()
 
 
 if __name__ == "__main__":

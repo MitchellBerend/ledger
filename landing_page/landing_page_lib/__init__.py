@@ -7,7 +7,7 @@ def get_name_price_amount(**login_info):
     try:
         cur = con.cursor()
         cur.execute(
-            """SELECT name,price_of_purchase,amount,date_of_purchase FROM profile;"""
+            """SELECT symbol.symbol, price, amount, timestamp  FROM profile INNER JOIN symbol on profile.symbol_id=symbol.symbol_id;"""
         )
         tup = cur.fetchall()
     finally:

@@ -9,8 +9,8 @@ from time import time
 database_login_info = {
     "user": environ["db_user"],
     "password": environ["db_password"],
-    "database": "profile",
-    "host": socket.gethostbyname("profile_odin"),
+    "database": "odin",
+    "host": socket.gethostbyname("portfolio_db"),
 }
 
 lib.insert_total_diff(**database_login_info)

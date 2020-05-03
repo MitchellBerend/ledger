@@ -6,8 +6,8 @@ import landing_page_lib
 database_login_info = {
     "user": environ["db_user"],
     "password": environ["db_password"],
-    "database": "profile",
-    "host": socket.gethostbyname("profile_odin"),
+    "database": "odin",
+    "host": socket.gethostbyname("portfolio_db"),
 }
 
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
