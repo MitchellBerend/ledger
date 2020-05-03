@@ -20,7 +20,7 @@ def deposit_money(amount, **login_info):
     con = sql.connect(**login_info)
     try:
         cur = con.cursor()
-        cur.execute(f"""insert into wallet values ('deposit',{-amount});""")
+        cur.execute(f"""insert into wallet values ( -1,{-amount});""")
     finally:
         con.commit()
         con.close()
@@ -33,7 +33,7 @@ def withdraw_money(amount, **login_info):
     con = sql.connect(**login_info)
     try:
         cur = con.cursor()
-        cur.execute(f"""insert into wallet values ('withdraw',{-amount});""")
+        cur.execute(f"""insert into wallet values ( -2,{-amount});""")
     finally:
         con.commit()
         con.close()

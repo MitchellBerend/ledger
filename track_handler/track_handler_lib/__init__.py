@@ -28,10 +28,8 @@ def insert_data_in_profile(symbol, price_of_purchase, amount, **login_info):
     try:
         cur = con.cursor()
         cur.execute(
-            f"""INSERT INTO profile VALUES ('{symbol.upper()}',{price_of_purchase},'{str(datetime.now())[:-16]}',{amount},{price_of_purchase * int(amount)});"""
+            f"""INSERT INTO profile VALUES ( '{str(datetime.now())[:-16]}', {price_of_purchase}, {amount}, (SELECT symbol_id FROM symbol WHERE symbol='{symbol.upper()}' );"""
         )
-    except:
-        print("catch")
     finally:
         con.commit()
         con.close()
@@ -41,7 +39,7 @@ def check_profile_for_existing_data(symbol, **login_info):
     con = sql.connect(**login_info)
     try:
         cur = con.cursor()
-        cur.execute(f"""SELECT * FROM profile WHERE name='{symbol.upper()}';""")
+        cur.execute(f"""SELECT * FROM profile WHERE symbol_id=(SELECT symbol_id FROM symbol WHERE symbol='{symbol.upper()}');""")
         count = cur.fetchall()
     finally:
         con.close()
@@ -54,7 +52,7 @@ def delete_data_from_profile(symbol, **login_info):
     con = sql.connect(**login_info)
     try:
         cur = con.cursor()
-        cur.execute(f"""DELETE FROM profile WHERE name='{symbol}';""")
+        cur.execute(f"""DELETE FROM profile WHERE symbol_id=(SELECT symbol_id FROM symbol WHERE symbol='{symbol}');""")
     finally:
         con.commit()
         con.close()
@@ -81,15 +79,15 @@ def add_wallet(symbol, **login_info):
     con = sql.connect(**login_info)
     try:
         cur = con.cursor()
-        cur.execute(f"""SELECT amount FROM profile WHERE name='{symbol}';""")
-        amount = float(cur.fetchone()[0])
+        cur.execute(f"""SELECT amount FROM profile WHERE symbol_id=(SELECT symbol FROM symbol WHERE symbol_id='{symbol}');""")
+        amount = float([x[0] for x in cur.fetchall()][-1])
         fee = value * amount * 0.0005
         if fee < 1.25:
             fee = 1.25
         elif fee > 29:
             fee = 29
-        cur.execute(f"""INSERT INTO wallet values('{symbol}', {amount*value});""")
-        cur.execute(f"""INSERT INTO wallet values ('{symbol}', {-fee});""")
+        cur.execute(f"""INSERT INTO wallet values ( (SELECT symbol_id FROM symbol WHERE symbol='{symbol}'), {amount*value});""")
+        cur.execute(f"""INSERT INTO wallet values ( (SELECT symbol_id FROM symbol WHERE symbol='{symbol}'), {-fee});""")
     finally:
         con.commit()
         con.close()
@@ -108,8 +106,8 @@ def subtract_wallet(symbol, amount, **login_info):
             fee = 1.25
         elif fee > 29:
             fee = 29
-        cur.execute(f"""INSERT INTO wallet values ('{symbol}', {-amount});""")
-        cur.execute(f"""INSERT INTO wallet values ('{symbol}', {-fee});""")
+        cur.execute(f"""INSERT INTO wallet values ( (SELECT symbol_id FROM symbol WHERE symbol='{symbol}'), {-amount});""")
+        cur.execute(f"""INSERT INTO wallet values ( (SELECT symbol_id FROM symbol WHERE symbol='{symbol}'), {-fee});""")
     finally:
         con.commit()
         con.close()
