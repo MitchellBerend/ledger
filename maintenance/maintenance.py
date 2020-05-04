@@ -72,7 +72,7 @@ def get_all_symbols(**database_login_info):
     try:
         con = sql.connect(**database_login_info)
         cur = con.cursor()
-        cur.execute("""SELECT symbol FROM symbol;""")
+        cur.execute("""SELECT symbol FROM symbol where symbol_id>=0;""")
         data = [symbol[0] for symbol in cur.fetchall()]
         return data
     except:
