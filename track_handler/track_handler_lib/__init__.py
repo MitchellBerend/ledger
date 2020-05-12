@@ -79,8 +79,8 @@ def add_wallet(symbol, **login_info):
     con = sql.connect(**login_info)
     try:
         cur = con.cursor()
-        cur.execute(f"""SELECT amount FROM profile WHERE symbol_id=(SELECT symbol FROM symbol WHERE symbol_id='{symbol}');""")
-        amount = float([x[0] for x in cur.fetchall()][-1])
+        cur.execute(f"""select amount from profile where symbol_id=(select symbol_id from symbol where symbol='{symbol}');""")
+        amount = float(cur.fetchone()[0])
         fee = value * amount * 0.0005
         if fee < 1.25:
             fee = 1.25
